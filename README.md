@@ -113,7 +113,27 @@ python app/server.py
   stage yourself first on a small subsample to confirm it trains before committing to a full run.
 - `app/server.py` + `app/templates/index.html` + `app/static/` — verified end-to-end with
   Flask's test client: the index page renders correctly, and a real POST to `/api/predict`
-  with a synthetic clip returned a correct JSON response (prediction, confidence, real
+  with a synthetic clip returned a correct JSON respon# Fast & Explainable Audio Deepfake Detector
+### RL-Guided Frequency Evidence Detection for Synthetic Speech
+
+A lightweight audio deepfake detection system that not only classifies speech as **genuine or synthetic**, but also **explains which frequency bands** revealed the decision — trained with a reinforcement learning policy inspired by GRPO, small enough to run on a laptop CPU.
+
+---
+
+## Overview
+
+| | AASIST | FT-GRPO | **This Project** |
+|---|---|---|---|
+| Parameters | ~85K | ~7B | ~2M |
+| Explainable | ❌ | ✅ | ✅ |
+| CPU trainable | ✅ | ❌ | ✅ |
+| Evidence type | None | Natural language | Frequency bands |
+
+Most detectors are either fast-but-opaque or interpretable-but-massive. This project targets the gap between them — a three-stage pipeline that is small, fast, and still produces a genuine explanation grounded in the audio signal.
+
+---
+
+## Architecturese (prediction, confidence, real
   Hz-labeled evidence bands, correctly-shaped spectrogram data) that matches exactly what the
   frontend JavaScript expects. The actual rendered page (canvas drawing, drag-and-drop) still
   needs a visual check in a real browser — the test client confirms the data contract, not
