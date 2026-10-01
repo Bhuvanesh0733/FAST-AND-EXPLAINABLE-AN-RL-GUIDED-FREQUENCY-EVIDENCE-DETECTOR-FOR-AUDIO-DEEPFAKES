@@ -3,11 +3,18 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.pt
 *.pth
 *.ckpt
 data/raw/
 data/processed/
-checkpoints/
 *.egg-info/
 .env
+
+# Allow Stage 2 small checkpoints (needed for deployment)
+!checkpoints/
+!checkpoints/stage2/
+!checkpoints/stage2/*.pt
+
+# Block large Stage 1 model (360 MB - too big for GitHub)
+checkpoints/stage1/
+checkpoints/baseline/
