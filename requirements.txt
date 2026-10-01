@@ -11,3 +11,5 @@ matplotlib
 seaborn
 tqdm
 flask
+gunicorn
+requests
