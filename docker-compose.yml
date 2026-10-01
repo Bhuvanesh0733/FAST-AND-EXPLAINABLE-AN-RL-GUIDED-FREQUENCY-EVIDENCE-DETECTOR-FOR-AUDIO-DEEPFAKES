@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY:-}   # optional — leave blank if not using AI explanations

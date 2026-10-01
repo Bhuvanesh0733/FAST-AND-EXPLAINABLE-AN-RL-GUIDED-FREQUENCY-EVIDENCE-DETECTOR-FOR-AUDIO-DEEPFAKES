@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+data/
+notebooks/
+reports/
+tests/
+*.log
+.gitignore
+.git/
+checkpoints/baseline/
