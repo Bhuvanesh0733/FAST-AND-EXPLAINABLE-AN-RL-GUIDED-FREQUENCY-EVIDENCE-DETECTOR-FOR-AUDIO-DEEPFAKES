@@ -2,7 +2,7 @@ services:
   - type: web
     name: audio-deepfake-detector
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: bash build.sh
     startCommand: gunicorn --workers 1 --timeout 120 --bind 0.0.0.0:$PORT app.server:app
     envVars:
       - key: GROQ_API_KEY
