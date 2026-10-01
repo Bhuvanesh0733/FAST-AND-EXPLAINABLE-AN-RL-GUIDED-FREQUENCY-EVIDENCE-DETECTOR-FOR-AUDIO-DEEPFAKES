@@ -4,8 +4,6 @@ pandas
 librosa
 soundfile
 scikit-learn
-torch
-torchaudio
 transformers
 matplotlib
 seaborn
