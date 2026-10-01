@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: audio-deepfake-detector
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app/server.py
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
