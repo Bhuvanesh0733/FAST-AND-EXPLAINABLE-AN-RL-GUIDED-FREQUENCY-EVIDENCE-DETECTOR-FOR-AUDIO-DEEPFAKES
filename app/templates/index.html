@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequency Evidence — audio deepfake detector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <p class="wordmark">Frequency Evidence</p>
+      <h1>Drop in a clip. We'll show you which frequencies gave it away.</h1>
+      <p class="lede">A small classifier trained to flag synthetic speech, paired with a policy that learns which frequency bands actually support the call — instead of a single black-box verdict.</p>
+    </header>
+
+    <section class="dropzone" id="dropzone" tabindex="0">
+      <input type="file" id="fileInput" accept=".wav,.flac,.mp3" hidden>
+      <div class="dropzone-inner">
+        <p class="dropzone-label">Drop a WAV or FLAC clip here, or click to browse</p>
+        <p class="dropzone-sub" id="fileName"></p>
+      </div>
+    </section>
+
+    <div class="detect-row">
+      <button class="detect-button" id="detectButton" disabled>Detect</button>
+      <p class="status" id="status"></p>
+    </div>
+
+    <section class="results" id="results" hidden>
+      <div class="panel visual-panel">
+        <p class="panel-label">Waveform &amp; spectrogram</p>
+        <div class="scope">
+          <canvas id="waveformCanvas" height="56"></canvas>
+          <canvas id="spectrogramCanvas" height="220"></canvas>
+          <div class="scope-axis" id="scopeAxis"></div>
+        </div>
+      </div>
+
+      <div class="panel verdict-panel">
+        <div class="verdict">
+          <span class="verdict-badge" id="verdictBadge">&mdash;</span>
+          <div class="confidence">
+            <div class="confidence-bar"><div class="confidence-fill" id="confidenceFill"></div></div>
+            <span class="confidence-value" id="confidenceValue">&mdash;</span>
+          </div>
+        </div>
+
+        <p class="panel-label">Evidence</p>
+        <ul class="band-list" id="bandList"></ul>
+      </div>
+
+      <div class="panel ai-panel">
+        <p class="panel-label">
+          What this means
+          <span class="source-tag" id="sourceTag"></span>
+        </p>
+        <p class="ai-explanation" id="aiExplanation"></p>
+      </div>
+    </section>
+
+    <footer class="footnote">
+      <p>This view runs the interpretability stage: a small classifier over frequency-band energy, paired with a reinforcement-learning policy — trained with a GRPO-style group-relative reward — that decides which bands are worth showing as evidence. The project's Stage 1 transfer-learning classifier (Wav2Vec2) handles the primary accuracy numbers reported separately; this page is the explainability layer built on top.</p>
+    </footer>
+  </main>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
