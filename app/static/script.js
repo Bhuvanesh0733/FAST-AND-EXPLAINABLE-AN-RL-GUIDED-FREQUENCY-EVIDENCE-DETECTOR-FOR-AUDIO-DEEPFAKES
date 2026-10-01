@@ -37,7 +37,20 @@ detectButton.addEventListener("click", () => {
     if (selectedFile) runDetection(selectedFile);
 });
 
+const ALLOWED_TYPES = ["audio/wav", "audio/x-wav", "audio/flac", "audio/x-flac",
+                       "audio/mpeg", "audio/mp3", "audio/ogg", "audio/wave"];
+const ALLOWED_EXTS  = [".wav", ".flac", ".mp3", ".ogg"];
+
 function stageFile(file) {
+    const ext = file.name.slice(file.name.lastIndexOf(".")).toLowerCase();
+    const typeOk = ALLOWED_TYPES.includes(file.type) || ALLOWED_EXTS.includes(ext);
+    if (!typeOk) {
+        status.textContent = `Unsupported file: "${file.name}". Please upload a WAV, FLAC, MP3, or OGG audio file.`;
+        selectedFile = null;
+        fileName.textContent = "";
+        detectButton.disabled = true;
+        return;
+    }
     selectedFile = file;
     fileName.textContent = file.name;
     detectButton.disabled = false;
@@ -53,8 +66,16 @@ async function runDetection(file) {
     const formData = new FormData();
     formData.append("file", file);
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000); // 60-second timeout
+
     try {
-        const res = await fetch("/api/predict", { method: "POST", body: formData });
+        const res = await fetch("/api/predict", {
+            method: "POST",
+            body: formData,
+            signal: controller.signal,
+        });
+        clearTimeout(timeout);
         const data = await res.json();
         if (!res.ok) {
             status.textContent = data.error || "Something went wrong.";
@@ -65,7 +86,12 @@ async function runDetection(file) {
         detectButton.disabled = false;
         renderResults(data);
     } catch (err) {
-        status.textContent = "Could not reach the server.";
+        clearTimeout(timeout);
+        if (err.name === "AbortError") {
+            status.textContent = "Request timed out. The server may be waking up — try again in 30 seconds.";
+        } else {
+            status.textContent = "Could not reach the server. Check your connection and try again.";
+        }
         detectButton.disabled = false;
     }
 }
